@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# This script creates a PID file, handles signals, and cleans up on exit
+
+# Kök (root) imtiyazı ilə işlədiyinə görə PID faylını yaradırıq
+# $$ skriptin cari proses ID-sini (PID) göstərir
+echo "$$" > /tmp/myscript.pid
+
+# SIGTERM siqnalı üçün trap (Həm mesaj yazır, həm də təmizləyib çıxır)
+trap "echo 'I hate the kill command'; rm /tmp/myscript.pid; exit" SIGTERM
+
+# SIGINT (Ctrl+C) siqnalı üçün trap
+trap "echo 'Y U no love me?!'" SIGINT
+
+# SIGQUIT (Ctrl+\) siqnalı üçün trap (Təmizləyib çıxır)
+trap "rm /tmp/myscript.pid; exit" SIGQUIT
+
+# Sonsuz dövr
+while true
+do
+    echo "To infinity and beyond"
+    sleep 2
+done
