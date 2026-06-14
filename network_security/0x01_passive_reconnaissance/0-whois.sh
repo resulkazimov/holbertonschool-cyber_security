@@ -1,0 +1,2 @@
+#!/bin/bash
+whois $1 | awk -v ORS="" 'BEGIN{split("Registrant,Admin,Tech",g,",");split("Name,Organization,Street,City,State/Province,Postal Code,Country,Phone,Phone Ext,Fax,Fax Ext,Email",f,",")} {sub(/^[ \t]+/,"");if($0~/^[A-Za-z ]+:/){c=index($0,":");k=substr($0,1,c-1);v=substr($0,c+1);sub(/^[ \t]+/,"",v);sub(/[ \t\r\n]+$/,"",v);sub(/^[A-Za-z ]+ /,"",k);d[k]=v}} END{out="";for(i=1;i<=3;i++){for(j=1;j<=12;j++){csv=g[i]" "f[j];val=d[f[j]];if(f[j]~/Ext$/)csv=csv":";if(f[j]=="Street"&&val!="")val=val" ";out=out csv","val"\n"}}sub(/\n$/,"",out);printf "%s",out}' > $1.csv
