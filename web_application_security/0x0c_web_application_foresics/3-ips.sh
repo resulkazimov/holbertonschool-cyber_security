@@ -1,2 +1,2 @@
 #!/bin/bash
-grep -i "Accepted" auth.log | grep -E -o "([0-9]{1,3}\.){3}[0-9]{1,3}" | sort -u | wc -l
+grep "Accepted" auth.log | awk '{for(i=1;i<=NF;i++) if($i=="from") print $(i+1)}' | sort -u | wc -l
